@@ -8,6 +8,7 @@ import java.awt.event.*;
 public class Login extends JFrame implements ActionListener{ // JFrame class is under swing package // ActionListener(to change Frames) in awt.events package
 
     JButton rules, back;   // declaring globally 
+    JTextField fname;
     Login() { // constructor // all the features of frame should be written inside it
 
 
@@ -40,7 +41,7 @@ public class Login extends JFrame implements ActionListener{ // JFrame class is 
         add(name);
 
         // input name textfield 
-        JTextField fname = new JTextField();
+        fname = new JTextField();
         fname.setBounds(735, 200, 300, 25);
         fname.setFont(new Font("Times New Roman", Font.BOLD, 20));
         add(fname);
@@ -75,7 +76,9 @@ public class Login extends JFrame implements ActionListener{ // JFrame class is 
     public void actionPerformed(ActionEvent ae){   // overridding method the abstract methods for implemetation // for performing action when clicked on buttons 
 
         if(ae.getSource() == rules){       // check it rules is clicked or back is clicked 
-
+            String name = fname.getText();  // method to get the Text from TextField
+            setVisible(false);
+            new Rules(name); 
         }
         else if(ae.getSource() == back){
             setVisible(false);   // if back button is pressed, screen will be disappear 
