@@ -8,7 +8,7 @@ import java.awt.event.*;
 public class Quiz extends JFrame implements ActionListener {  // ActionListener is interface that is being implemented 
     String questions[][] = new String[10][5];
     String answers[][] = new String[10][2];
-    String userAns[][] = new String[10][0];
+    String userAns[][] = new String[10][1];
 
     JLabel qno, question;
     ButtonGroup groupOptions;
