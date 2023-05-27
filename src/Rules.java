@@ -67,7 +67,8 @@ public class Rules extends JFrame implements ActionListener{
     public void actionPerformed(ActionEvent ae){   // overridding method the abstract methods for implemetation // for performing action when clicked on buttons 
 
         if(ae.getSource() == start){       // check it rules is clicked or back is clicked 
-             
+            setVisible(false);
+             new Quiz(name);
         }
         else{
             setVisible(false);   // if back button is pressed, screen will be disappear 

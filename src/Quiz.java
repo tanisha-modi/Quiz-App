@@ -1,24 +1,39 @@
 import java.awt.Color;
+// import java.awt.event.ActionListener;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
-public class Quiz extends JFrame {
+public class Quiz extends JFrame implements ActionListener {  // ActionListener is interface that is being implemented 
     String questions[][] = new String[10][5];
     String answers[][] = new String[10][2];
-    JLabel qno, question;
-    JRadioButton opt1, opt2, opt3, opt4;
+    String userAns[][] = new String[10][0];
 
-    Quiz(){
+    JLabel qno, question;
+    ButtonGroup groupOptions;
+    JRadioButton opt1, opt2, opt3, opt4;
+    JButton submit, next, lifeline;
+
+    public static int timer = 5;
+    public static int ans_given = 0; // var to check whether the ans is given or not
+    public static int count = 0;
+    public static int score = 0;
+    static String name;
+
+    Quiz(String name) {
+        this.name = name;
         getContentPane().setBackground(Color.WHITE);
         setBounds(50, 0, 1440, 850);
         setLayout(null);
 
-        // Image 
-        ImageIcon i2 = new ImageIcon(ClassLoader.getSystemResource("icons/quiz.jpg"));   // ImageIcon : a class in Jframe, used to take image from the path 
+        // Image
+        ImageIcon i2 = new ImageIcon(ClassLoader.getSystemResource("icons/quiz.jpg")); // ImageIcon : a class in Jframe,
+                                                                                       // used to take image from the
+                                                                                       // path
         JLabel image = new JLabel(i2);
-        image.setBounds(0, 0, 1440, 392);  // puting image for our layout 
-        add(image);  // to add image to the frame, but we can't add directly, we need to make JLabel
+        image.setBounds(0, 0, 1440, 392); // puting image for our layout
+        add(image); // to add image to the frame, but we can't add directly, we need to make JLabel
 
         // ques no
         qno = new JLabel(" ");
@@ -26,14 +41,13 @@ public class Quiz extends JFrame {
         qno.setFont(new Font("Tahoma", Font.PLAIN, 24));
         add(qno);
 
-        // question 
+        // question
         question = new JLabel(" ");
         question.setBounds(150, 450, 900, 30);
         question.setFont(new Font("Tahoma", Font.PLAIN, 24));
         add(question);
 
-
-        // questions 
+        // questions
         questions[0][0] = "Which is used to find and fix bugs in the Java programs.?";
         questions[0][1] = "JVM";
         questions[0][2] = "JDB";
@@ -94,7 +108,7 @@ public class Quiz extends JFrame {
         questions[9][3] = "Use of exception handling";
         questions[9][4] = "Dynamic binding between objects";
 
-        //answers 
+        // answers
         answers[0][1] = "JDB";
         answers[1][1] = "int";
         answers[2][1] = "java.util package";
@@ -106,86 +120,223 @@ public class Quiz extends JFrame {
         answers[8][1] = "java.lang.StringBuilder";
         answers[9][1] = "Bytecode is executed by JVM";
 
-
         // option 1
-        opt1 =new JRadioButton(" ");
+        opt1 = new JRadioButton(" ");
         opt1.setBounds(170, 520, 700, 30);
         opt1.setBackground(Color.WHITE);
         opt1.setFont(new Font("Dialog", Font.PLAIN, 20));
         add(opt1);
-        
+
         // option 2
-        opt2 =new JRadioButton(" ");
+        opt2 = new JRadioButton(" ");
         opt2.setBounds(170, 560, 700, 30);
         opt2.setBackground(Color.WHITE);
         opt2.setFont(new Font("Dialog", Font.PLAIN, 20));
         add(opt2);
 
         // option 3
-        opt3 =new JRadioButton(" ");
+        opt3 = new JRadioButton(" ");
         opt3.setBounds(170, 600, 700, 30);
         opt3.setBackground(Color.WHITE);
         opt3.setFont(new Font("Dialog", Font.PLAIN, 20));
         add(opt3);
 
         // option 4
-        opt4 =new JRadioButton(" ");
+        opt4 = new JRadioButton(" ");
         opt4.setBounds(170, 640, 700, 30);
         opt4.setBackground(Color.WHITE);
         opt4.setFont(new Font("Dialog", Font.PLAIN, 20));
         add(opt4);
 
-
-        ButtonGroup groupOptions = new ButtonGroup();   // group the radio buttons so that if one button is selected all other buttons got deselected 
+        groupOptions = new ButtonGroup(); // group the radio buttons so that if one button is selected all other buttons
+                                          // got deselected
         groupOptions.add(opt1);
         groupOptions.add(opt2);
         groupOptions.add(opt3);
         groupOptions.add(opt4);
-         
 
         // Buttons
-        JButton next = new JButton("Next");
-        next.setBounds(1100, 550, 200, 40);   // values choosing through hit and trial 
+        next = new JButton("Next");
+        next.setBounds(1100, 550, 200, 40); // values choosing through hit and trial
         next.setBackground(new Color(30, 144, 254));
-        next.setFont(new Font("", Font.PLAIN, 20));
+        next.setFont(new Font("", Font.PLAIN, 22));
         next.setForeground(Color.WHITE);
-        // rules.addActionListener(this);
+        next.addActionListener(this);
         add(next);
 
-        JButton lifeline = new JButton("50-50 Lifeline");
-        lifeline.setBounds(1100, 630, 200, 40);   // values choosing through hit and trial 
+        lifeline = new JButton("50-50 Lifeline");
+        lifeline.setBounds(1100, 630, 200, 40); // values choosing through hit and trial
         lifeline.setBackground(new Color(30, 144, 254));
-        lifeline.setFont(new Font("", Font.PLAIN, 20));
+        lifeline.setFont(new Font("", Font.PLAIN, 22));
         lifeline.setForeground(Color.WHITE);
-        // rules.addActionListener(this);
+        lifeline.addActionListener(this);
         add(lifeline);
 
-        JButton submit = new JButton("Submit");
-        submit.setBounds(1100, 710, 200, 40);   // values choosing through hit and trial 
+        submit = new JButton("Submit");
+        submit.setBounds(1100, 710, 200, 40); // values choosing through hit and trial
         submit.setBackground(new Color(30, 144, 254));
-        submit.setFont(new Font("", Font.PLAIN, 20));
+        submit.setFont(new Font("", Font.PLAIN, 22));
         submit.setForeground(Color.WHITE);
         submit.setEnabled(false);
-        // rules.addActionListener(this);
+        submit.addActionListener(this);
         add(submit);
-        
-        start(0);
 
-        // for timer we need to use graphic class 
+        start(count);
+
+        // for timer we need to use graphic class
 
         setVisible(true);
     }
 
-    public void start(int count){
+    public void actionPerformed(ActionEvent ae) {
+        if (ae.getSource() == next) { // user clicked on next button
+            repaint();
+            opt3.setEnabled(true); // due to disabling of some options for lifeline, they needed to be enable again
+            opt3.setEnabled(true);
+            opt3.setEnabled(true);
+            opt3.setEnabled(true);
 
-        qno.setText("" + (count + 1) + ". ");
-        question.setText(questions[count][0]);
-        opt1.setText(questions[count][1]);
-        opt2.setText(questions[count][2]);
-        opt3.setText(questions[count][3]);
-        opt4.setText(questions[count][4]);
+            ans_given = 1;
+
+            if (groupOptions.getSelection() == null) { // if the user has not selected the ans
+                userAns[count][0] = "";
+            } else {
+                userAns[count][0] = groupOptions.getSelection().getActionCommand();
+            }
+
+            if (count == 8) { // disabling the next button and enabling submit button at last ques
+                next.setEnabled(false);
+                submit.setEnabled(true);
+            }
+            count++;
+            start(count);
+
+        } else if (ae.getSource() == lifeline) {
+            if (count == 2 || count == 4 || count == 6 || count == 8 || count == 9) {
+                opt2.setEnabled(false);
+                opt3.setEnabled(false);
+            } else {
+                opt1.setEnabled(false);
+                opt4.setEnabled(false);
+            }
+            lifeline.setEnabled(false);
+        } else {
+            ans_given = 1;
+            if (groupOptions.getSelection() == null) { // if the user has not selected the ans
+                userAns[count][0] = "";
+            } else {
+                userAns[count][0] = groupOptions.getSelection().getActionCommand();
+            }
+
+            for (int i = 0; i < userAns.length; i++) {
+                if (userAns[i][0].equals(answers[i][1])) {
+                    score += 10;
+                }
+            }
+            setVisible(false);
+            new Score(name, score);
+            // score class visible hogi
+        }
     }
+
+    // to change the time every second
+    // we dont need to call paint method // it is called automatically when object
+    // is created
+    public void paint(Graphics g) { // it is used to reframe // to change something on frame in particular time
+                                    // interval // using graphic class
+        super.paint(g); // paint method from its super class
+
+        String time = "Time left - " + timer + " sec"; // change the time every second
+        g.setColor(Color.RED);
+        g.setFont(new Font("Tahoma", Font.BOLD, 25));
+
+        if (timer > 0) {
+            g.drawString(time, 1100, 500); // show on Frame
+        } else {
+            g.drawString("Times Up!!", 1100, 500);
+        }
+
+        timer--; // decrement the timer by 1, initially which was 15
+
+        try {
+            Thread.sleep(1000); // using thread class we can delay the execution of code by some sec // takes
+                                // value in milisec
+            repaint();
+        } catch (Exception e) {
+            e.printStackTrace(); // in these code, there is the chance of exception occuring
+        }
+
+        if (ans_given == 1) { // if(ques is answered)
+            ans_given = 0; // keeping it 0 for next question
+            timer = 12; // again timer will be set to its initial value for next question
+
+        } else if (timer < 0) { // if(time is up )
+            timer = 8;
+            opt3.setEnabled(true);
+            opt3.setEnabled(true);
+            opt3.setEnabled(true);
+            opt3.setEnabled(true);
+
+            if (count == 8) { // disabling the next button and enabling submit button at last ques
+                next.setEnabled(false);
+                submit.setEnabled(true);
+            }
+
+            if (count == 9) { 
+                if (groupOptions.getSelection() == null) { // if the user has not selected the ans
+                    userAns[count][0] = "";
+                } else {
+                    userAns[count][0] = groupOptions.getSelection().getActionCommand();
+                }
+
+                for (int i = 0; i < userAns.length; i++) {
+                    if (userAns[i][0].equals(answers[i][1])) {
+                        score += 10;
+                    }
+                }
+                setVisible(false);
+                new Score(name, score);
+                // score class visible hogi
+            } else {
+
+                if (groupOptions.getSelection() == null) { // if the user has not selected the ans
+                    userAns[count][0] = "";
+                } else {
+                    userAns[count][0] = groupOptions.getSelection().getActionCommand(); // returns the option value that
+                                                                                        // is
+                                                                                        // being selected
+                    // groupOption gives option // getSelection gives the option that is selected
+                    // and // getActioncommand
+                    // gives the value of that selected option
+                }
+
+                count++;
+                start(count); // to call the start for next question
+            }
+        }
+    }
+
+    public void start(int countx) {
+
+        qno.setText("" + (countx + 1) + ". ");
+        question.setText(questions[countx][0]);
+
+        opt1.setText(questions[countx][1]);
+        opt1.setActionCommand(questions[countx][1]); 
+
+        opt2.setText(questions[countx][2]);
+        opt2.setActionCommand(questions[countx][2]);
+
+        opt3.setText(questions[countx][3]);
+        opt3.setActionCommand(questions[countx][3]);
+
+        opt4.setText(questions[countx][4]);
+        opt4.setActionCommand(questions[countx][4]);
+
+        groupOptions.clearSelection();
+    }
+
     public static void main(String[] args) {
-        new Quiz();
+        new Quiz("user");
     }
 }
