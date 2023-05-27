@@ -234,7 +234,7 @@ public class Quiz extends JFrame implements ActionListener {  // ActionListener 
                 }
             }
             setVisible(false);
-            count =0;
+            count = 0;
             new Score(name, score);
             // score class visible hogi
         }
